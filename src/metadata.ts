@@ -38,7 +38,7 @@ export interface Metadata {
     | "learning"
     | "creator"
     | "other";
-  features?: LocaleString;
+  features?: Record<string, string[]>;
   settings?: Record<string, unknown>;
   assets: {
     logo: string;
