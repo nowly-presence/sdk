@@ -1,5 +1,5 @@
-import type { PresenceData, PresenceEventName, UpdateDataContext } from "@/types/presence"
-import type { InferSettings, SettingDefinition } from "@/types/settings"
+import type { PresenceData, PresenceEventName, UpdateDataContext } from "#/types/presence"
+import type { InferSettings, SettingDefinition } from "#/types/settings"
 
 export type PresenceAssets = {
   readonly Logo: string;

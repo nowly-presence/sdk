@@ -1,5 +1,5 @@
-import type { PresenceData } from "@/types/presence";
-export { PresenceType } from "@/types/presence";
+import type { PresenceData } from "#/types/presence";
+export { PresenceType } from "#/types/presence";
 
 type LocaleString = Partial<Record<string, string>>
 

@@ -1,4 +1,4 @@
-import type { ImageProxyService } from "@/types/presence";
+import type { ImageProxyService } from "#/types/presence";
 
 const DISCORD_IMAGE_KEY_MAX_LENGTH = 300;
 const IMAGE_PROXY_BASE_URL = "https://api.nowly.me/image-proxy";

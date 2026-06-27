@@ -1,4 +1,4 @@
-export type { LocaleString } from "@/types/settings"
+export type { LocaleString } from "#/types/settings"
 export type {
   BooleanSetting,
   InputSetting,
@@ -7,7 +7,7 @@ export type {
   SliderSetting,
   PresenceSetting,
   InferSettings,
-} from "@/types/settings"
+} from "#/types/settings"
 
 export type {
   PresenceButton,
@@ -15,14 +15,14 @@ export type {
   PresenceTypeValue,
   PresenceEventName,
   UpdateDataContext,
-} from "@/types/presence"
-export { PresenceType } from "@/types/presence"
+} from "#/types/presence"
+export { PresenceType } from "#/types/presence"
 
-export type { PresenceAssets, PresenceInstance, PresenceConstructor } from "@/types/instance"
+export type { PresenceAssets, PresenceInstance, PresenceConstructor } from "#/types/instance"
 
-export { createMediaTimestamps } from "@/helpers/media"
+export { createMediaTimestamps } from "#/helpers/media"
 export {
   createImageProxyUrl,
   createImageProxyPath,
   createCachedImageProxyUrl,
-} from "@/helpers/image-proxy"
+} from "#/helpers/image-proxy"

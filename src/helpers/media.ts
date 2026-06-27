@@ -1,4 +1,4 @@
-import type { PresenceData } from "@/types/presence";
+import type { PresenceData } from "#/types/presence";
 
 export const createMediaTimestamps = (
   media: Pick<HTMLMediaElement, "currentTime" | "duration" | "paused">,
