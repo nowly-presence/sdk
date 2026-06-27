@@ -10,76 +10,61 @@ npm install @nowly/sdk
 
 Zero dependencies.
 
-## Usage
+## Presence scripts
 
-### Presence scripts
+`Presence` and `Assets` are globals injected by the extension at runtime — no import needed.
 
 ```typescript
-import { Presence, PresenceType } from "@nowly/sdk";
+const settings = Presence.Settings({
+  "show-details": {
+    type: "boolean",
+    default: true,
+    label: { "en-US": "Show details" },
+    description: { "en-US": "Display page details on Discord" },
+  },
+})
 
-const presence = new Presence({
-  Settings({
-    "show-button": {
-      title: "Show button",
-      description: "Display a button on Discord",
-      type: "boolean",
-      value: true,
-    },
-  }),
-});
+const presence = new Presence(settings)
 
-presence.on("UpdateData", async () => {
+presence.on("UpdateData", (ctx) => {
   presence.setActivity({
     details: "Browsing",
     state: "Some page",
-    largeImageKey: "logo",
+    largeImageKey: Assets.Logo,
     type: PresenceType.Watching,
-  });
-});
+  })
+})
 ```
 
-### Metadata
+## Helpers
 
 ```typescript
-import type { Metadata } from "@nowly/sdk/metadata";
+import { createMediaTimestamps, PresenceType } from "@nowly/sdk"
+import type { PresenceData } from "@nowly/sdk"
 
-const meta: Metadata = {
-  name: "YouTube",
-  description: {
-    "en-US": "YouTube presence"
-  },
-  longDescription: {
-    "en-US": "A presence for YouTube that shows what you're watching."
-  },
-  color: "#FF0000",
-  category: "video",
-  url: ["youtube.com"],
-};
+createMediaTimestamps(videoElement)
+// => { startTimestamp: number, endTimestamp: number } | {}
 ```
 
 ## API
 
-### `@nowly/sdk`
-
-| Export | Description |
-|---|---|
-| `PresenceData` | Activity data sent to Discord |
-| `PresenceType` | `Watching`, `Playing`, `Listening`, `Streaming`, `Competing` |
-| `PresenceButton` | Button with label + URL |
-| `PresenceSetting` / `InferSettings` | Setting types (boolean, input, select, slider) |
-| `PresenceInstance` / `PresenceConstructor` | Presence runtime types |
-| `createMediaTimestamps()` | Compute `start`/`end` from media elements |
-| `createImageProxyUrl()` | Build image proxy URL |
-| `createImageProxyPath()` | Build image proxy path |
-| `createCachedImageProxyUrl()` | Build cached image proxy URL |
-
-### `@nowly/sdk/metadata`
-
-| Export | Description |
-|---|---|
-| `Metadata` | Presence metadata schema |
-| `PresenceContext` | Runtime context for factory-based presences |
-| `PresenceFactory` | Alternative presence interface |
+| Export | Kind | Description |
+|---|---|---|
+| `PresenceData` | type | Activity data sent to Discord |
+| `PresenceType` | const | `{ Playing: 0, Streaming: 1, Listening: 2, Watching: 3, Competing: 5 }` |
+| `PresenceTypeValue` | type | `0 \| 1 \| 2 \| 3 \| 5` |
+| `PresenceButton` | type | `{ label: string, url: string }` |
+| `PresenceSetting` | type | Boolean, Input, Select, or Slider setting |
+| `InferSettings` | type | Infers the settings object shape from definitions |
+| `LocaleString` | type | `Partial<Record<string, string>>` |
+| `UpdateDataContext` | type | Context received in `UpdateData` listener |
+| `PresenceInstance` | type | Runtime presence instance interface |
+| `PresenceConstructor` | type | Presence class interface |
+| `PresenceAssets` | type | `{ Logo, Icon, Thumbnail }` |
+| `createMediaTimestamps()` | fn | Compute start/end timestamps from media elements |
+| `createImageProxyUrl()` | fn | Build direct image proxy URL |
+| `createImageProxyPath()` | fn | Build image proxy URL from parts |
+| `createCachedImageProxyUrl()` | fn | Build cached image proxy URL (async) |
 
 ## License
 

@@ -1,6 +1,6 @@
 {
   "name": "@nowly/sdk",
-  "version": "1.2.7",
+  "version": "0.99.1",
   "license": "MIT",
   "author": {
     "name": "Gaëtan H",
@@ -15,6 +15,9 @@
   "exports": {
     ".": "./src/index.ts",
     "./metadata": "./src/metadata.ts"
+  },
+  "imports": {
+    "#/*": "./src/*"
   },
   "files": [
     "src"
