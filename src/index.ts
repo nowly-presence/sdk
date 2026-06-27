@@ -1,28 +1,8 @@
-export type { LocaleString } from "#/types/settings"
-export type {
-  BooleanSetting,
-  InputSetting,
-  SelectOption,
-  SelectSetting,
-  SliderSetting,
-  PresenceSetting,
-  InferSettings,
-} from "#/types/settings"
-
-export type {
-  PresenceButton,
-  PresenceData,
-  PresenceTypeValue,
-  PresenceEventName,
-  UpdateDataContext,
-} from "#/types/presence"
-export { PresenceType } from "#/types/presence"
-
-export type { PresenceAssets, PresenceInstance, PresenceConstructor } from "#/types/instance"
-
+export { createCachedImageProxyUrl, createImageProxyPath, createImageProxyUrl } from "#/helpers/image-proxy"
 export { createMediaTimestamps } from "#/helpers/media"
-export {
-  createImageProxyUrl,
-  createImageProxyPath,
-  createCachedImageProxyUrl,
-} from "#/helpers/image-proxy"
+export type { PresenceAssets, PresenceConstructor, PresenceInstance } from "#/types/instance"
+export { PresenceType } from "#/types/presence"
+export type { PresenceButton, PresenceData, PresenceEventName, PresenceTypeValue, UpdateDataContext } from "#/types/presence"
+export type { BooleanSetting, InferSettings, InputSetting, LocaleString, PresenceSetting, SelectOption, SelectSetting, SliderSetting } from "#/types/settings"
+
+import "#/types/instance"
