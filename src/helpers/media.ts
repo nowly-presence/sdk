@@ -3,7 +3,7 @@ import type { PresenceData } from "#/types/presence";
 export const createMediaTimestamps = (
   media: Pick<HTMLMediaElement, "currentTime" | "duration" | "paused">,
   now = Math.floor(Date.now() / 1000),
-): Pick<PresenceData, "startTimestamp" | "endTimestamp"> => {
+): Partial<Pick<PresenceData, "startTimestamp" | "endTimestamp">> => {
   if (media.paused) return {};
 
   return {

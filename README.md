@@ -54,11 +54,6 @@ const meta: Metadata = {
   color: "#FF0000",
   category: "video",
   url: ["youtube.com"],
-  assets: {
-    logo: "logo.png",
-    icon: "icon.png",
-    thumbnail: "thumbnail.jpg",
-  },
 };
 ```
 
