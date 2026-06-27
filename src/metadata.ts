@@ -1,5 +1,5 @@
-import type { PresenceData } from "@/types/presence"
-export { PresenceType } from "@/types/presence"
+import type { PresenceData } from "@/types/presence";
+export { PresenceType } from "@/types/presence";
 
 type LocaleString = Partial<Record<string, string>>
 
@@ -15,8 +15,6 @@ export interface PresenceFactory {
   tick?(ctx: PresenceContext): void;
   destroy?(): void;
 }
-
-export type PlatformStatus = "available" | "soon" | "beta";
 
 export interface Metadata {
   slug?: string;
