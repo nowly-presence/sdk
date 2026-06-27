@@ -24,3 +24,8 @@ export type PresenceConstructor = {
   Settings: <T extends Record<string, SettingDefinition>>(definitions: T) => InferSettings<T>;
   Assets: <T extends Record<string, string>>(assets: T) => { [K in keyof T]: string };
 };
+
+declare global {
+  var Assets: PresenceAssets;
+  var Presence: PresenceConstructor;
+}
