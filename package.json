@@ -1,6 +1,6 @@
 {
   "name": "@nowly/sdk",
-  "version": "0.99.2",
+  "version": "0.99.3",
   "license": "MIT",
   "author": {
     "name": "Gaëtan H",
@@ -10,17 +10,26 @@
     { "name": "KiMi", "url": "https://github.com/q-kimi" }
   ],
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./metadata": "./src/metadata.ts"
-  },
-  "imports": {
-    "#/*": "./src/*"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./metadata": {
+      "import": "./dist/metadata.js",
+      "types": "./dist/metadata.d.ts"
+    }
   },
   "files": [
-    "src"
+    "dist"
   ],
-  "dependencies": {}
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1"
+  }
 }

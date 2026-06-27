@@ -1,5 +1,5 @@
-import type { PresenceData, PresenceEventName, UpdateDataContext } from "#/types/presence"
-import type { InferSettings, SettingDefinition } from "#/types/settings"
+import type { PresenceData, PresenceEventName, UpdateDataContext } from "#/types/presence";
+import type { InferSettings, SettingDefinition } from "#/types/settings";
 
 export type PresenceAssets = {
   readonly Logo: string;
@@ -24,8 +24,3 @@ export type PresenceConstructor = {
   Settings: <T extends Record<string, SettingDefinition>>(definitions: T) => InferSettings<T>;
   Assets: <T extends Record<string, string>>(assets: T) => { [K in keyof T]: string };
 };
-
-declare global {
-  var Assets: PresenceAssets;
-  var Presence: PresenceConstructor;
-}
