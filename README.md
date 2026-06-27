@@ -88,4 +88,4 @@ const meta: Metadata = {
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+[MIT](./LICENSE)
