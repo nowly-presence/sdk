@@ -12,7 +12,7 @@ export type PresenceInstance<S extends Record<string, unknown> = Record<string, 
   on(eventName: PresenceEventName, listener: (...args: unknown[]) => void | Promise<void>): void;
   setActivity(data: PresenceData): Promise<void>;
   clearActivity(): void;
-  getStrings<T extends Record<string, string>>(strings: T): Promise<T>;
+  getStrings<T extends Record<string, string>>(): Promise<T>;
   getSetting<T extends string | boolean | number = string>(key?: string): Promise<T | undefined>;
   info(message: string): void;
   error(message: string): void;

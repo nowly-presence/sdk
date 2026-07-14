@@ -36,6 +36,29 @@ presence.on("UpdateData", (ctx) => {
 })
 ```
 
+### Typed localized strings
+
+Language packs are optional. A presence that uses them can infer its string keys directly
+from `languages/en-US.json`, without generating TypeScript files:
+
+```typescript
+import type enUS from "./languages/en-US.json"
+
+const presence = new Presence()
+
+presence.on("UpdateData", async () => {
+  const strings = await presence.getStrings<typeof enUS>()
+
+  await presence.setActivity({
+    details: strings.browsing,
+  })
+})
+```
+
+The type-only import is removed from the bundle. It gives editors autocomplete for every
+key declared in `en-US.json` and makes unknown keys a TypeScript error. Presences without
+language packs can continue using inline strings and do not need to call `getStrings()`.
+
 ## Helpers
 
 ```typescript
