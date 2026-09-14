@@ -14,7 +14,7 @@ export type PresenceInstance<S extends Record<string, unknown> = Record<string, 
   clearActivity(): void;
   getStrings<T extends Record<string, string>>(): Promise<T>;
   formatString(template: string, params?: Record<string, string | number>): string;
-  getSetting<T extends string | boolean | number = string>(key?: string): Promise<T | undefined>;
+  getSetting<T extends string | boolean | number = string>(key: string): Promise<T | undefined>;
   info(message: string): void;
   error(message: string): void;
 };
