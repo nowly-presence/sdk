@@ -12,7 +12,7 @@ Zero dependencies.
 
 ## Presence scripts
 
-`Presence` and `Assets` are globals injected by the extension at runtime — no import needed.
+`Presence` and `Assets` are globals injected by the extension at runtime - no import needed.
 
 ```typescript
 const settings = Presence.Settings({
