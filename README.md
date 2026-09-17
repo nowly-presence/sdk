@@ -92,6 +92,8 @@ createMediaTimestamps(videoElement)
 | `createImageProxyPath()` | fn | Build image proxy URL from parts |
 | `createCachedImageProxyUrl()` | fn | Build cached image proxy URL (async) |
 
+`Metadata` (including optional `discordNative`) is exported from `@nowly/sdk/metadata`, not the main entry.
+
 ## License
 
 [MIT](./LICENSE)

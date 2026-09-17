@@ -40,4 +40,5 @@ export interface Metadata {
     | "other";
   features?: Record<string, string[]>;
   settings?: Record<string, unknown>;
+  discordNative?: boolean;
 }
