@@ -13,6 +13,7 @@ type CachedImageProxyEntry = {
 
 const cachedImageProxyUrls = new Map<string, CachedImageProxyEntry>();
 
+/** `service` should be your presence's own slug - see the Image Proxy docs. */
 export const createImageProxyUrl = (
   service: ImageProxyService,
   imageUrl: string | undefined,
