@@ -94,6 +94,20 @@ createMediaTimestamps(videoElement)
 
 `Metadata` (including optional `discordNative`) is exported from `@nowly/sdk/metadata`, not the main entry.
 
+## Presence instance methods
+
+`PresenceInstance` (the object returned by `new Presence(settings)`) exposes:
+
+| Method | Description |
+|---|---|
+| `on("UpdateData", ctx => ...)` | Registers the tick handler; `ctx.settings` holds current user settings |
+| `setActivity(data)` | Push `PresenceData` to Discord (async) |
+| `clearActivity()` | Clear the current activity |
+| `getStrings<T>()` | Load this presence's `locales/{lang}.json` content (async) |
+| `formatString(template, params)` | Interpolate `{name}`-style placeholders in a localized string |
+| `getSetting<T>(key)` | Read a single user setting value by key (async) |
+| `info(message)` / `error(message)` | Log to the extension's runtime log panel |
+
 ## License
 
 [MIT](./LICENSE)
