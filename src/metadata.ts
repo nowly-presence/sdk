@@ -27,6 +27,8 @@ export interface Metadata {
   url: string[];
   regExp?: string;
   world?: "main" | "isolated";
+  iframe?: boolean;
+  iFrameRegExp?: string;
   runAt?: "document_start" | "document_end" | "document_idle";
   color: string;
   category:
