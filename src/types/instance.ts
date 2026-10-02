@@ -1,3 +1,4 @@
+import type { IFrameData } from "#/types/iframe";
 import type { PresenceData, PresenceEventName, UpdateDataContext } from "#/types/presence";
 import type { InferSettings, SettingDefinition } from "#/types/settings";
 
@@ -9,6 +10,7 @@ export type PresenceAssets = {
 
 export type PresenceInstance<S extends Record<string, unknown> = Record<string, unknown>> = {
   on(eventName: "UpdateData", listener: (ctx: UpdateDataContext<S>) => void | Promise<void>): void;
+  on<T extends IFrameData = IFrameData>(eventName: "iFrameData", listener: (data: T) => void | Promise<void>): void;
   on(eventName: PresenceEventName, listener: (...args: unknown[]) => void | Promise<void>): void;
   setActivity(data: PresenceData): Promise<void>;
   clearActivity(): void;

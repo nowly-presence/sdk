@@ -86,6 +86,9 @@ createMediaTimestamps(videoElement)
 | `UpdateDataContext` | type | Context received in `UpdateData` listener |
 | `PresenceInstance` | type | Runtime presence instance interface |
 | `PresenceConstructor` | type | Presence class interface |
+| `IFrameData` | type | Object payload sent from a nested-frame script |
+| `IFrameInstance` | type | Nested-frame runtime interface |
+| `IFrameConstructor` | type | Nested-frame runtime constructor interface |
 | `PresenceAssets` | type | `{ Logo, Icon, Thumbnail }` |
 | `createMediaTimestamps()` | fn | Compute start/end timestamps from media elements |
 | `createImageProxyUrl()` | fn | Build direct image proxy URL |
@@ -107,6 +110,48 @@ createMediaTimestamps(videoElement)
 | `formatString(template, params)` | Interpolate `{name}`-style placeholders in a localized string |
 | `getSetting<T>(key)` | Read a single user setting value by key (async) |
 | `info(message)` / `error(message)` | Log to the extension's runtime log panel |
+
+### iFrame scripts
+
+Presence metadata can opt into a separate script for nested frames:
+
+```json
+{
+  "iframe": true,
+  "iFrameRegExp": "player\\.example\\.com/embed/"
+}
+```
+
+The `iframe.ts` file runs only in nested frames whose URL matches `iFrameRegExp`:
+
+```typescript
+const iframe = new iFrame()
+
+iframe.on("UpdateData", () => {
+  const video = document.querySelector("video")
+  if (!video) return
+
+  iframe.send({
+    video: {
+      paused: video.paused,
+      currentTime: video.currentTime,
+      duration: video.duration,
+    },
+  })
+})
+```
+
+The main `presence.ts` receives the data through `iFrameData`:
+
+```typescript
+presence.on("iFrameData", (data) => {
+  // Merge or replace the data from the matching frame.
+  console.log(data)
+})
+```
+
+Use `iframe.getUrl()` when the main presence needs to identify a frame. Send only activity data needed for Discord Rich Presence.
+
 
 ## License
 
