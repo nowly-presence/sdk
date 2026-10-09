@@ -1,158 +1,85 @@
 # @nowly/sdk
 
-Type definitions and helpers for [Nowly](https://nowly.me) presences.
+Build [Nowly](https://nowly.me) presences with typed activity data, settings, localization and small media/image helpers. The package describes the extension's presence API; it does not start a presence on its own. Use it in a presence script that the Nowly extension loads.
 
 ## Install
 
-```bash
+```sh
 npm install @nowly/sdk
 ```
 
-Zero dependencies.
+The package has no runtime dependencies. Its main entry exports types, `PresenceType` and helpers; metadata types are available separately from `@nowly/sdk/metadata`.
 
-## Presence scripts
+## Your first presence
 
-`Presence` and `Assets` are globals injected by the extension at runtime - no import needed.
+In a `presence.ts` in the [Nowly presences project](https://github.com/nowly-presence/presences), where the runtime globals are already declared:
 
-```typescript
+```ts
+import { PresenceType } from "@nowly/sdk"
+
 const settings = Presence.Settings({
-  "show-details": {
+  "show-title": {
     type: "boolean",
     default: true,
-    label: { "en-US": "Show details" },
-    description: { "en-US": "Display page details on Discord" },
+    label: { "en-US": "Show page title" },
   },
 })
 
 const presence = new Presence(settings)
 
-presence.on("UpdateData", (ctx) => {
-  presence.setActivity({
+presence.on("UpdateData", async ({ settings }) => {
+  await presence.setActivity({
     details: "Browsing",
-    state: "Some page",
+    state: settings["show-title"] ? document.title : undefined,
     largeImageKey: Assets.Logo,
     type: PresenceType.Watching,
   })
 })
 ```
 
-### Typed localized strings
+`Presence` and `Assets` are **injected by the extension**, not imported from `@nowly/sdk`. `PresenceType` **is** a package export and must be imported. In a different TypeScript project, declare the injected globals using the exported `PresenceConstructor` and `PresenceAssets` types; installing the package alone does not supply those globals at runtime. The [presences project's global declarations](https://github.com/nowly-presence/presences/blob/stable/src/global.d.ts) show the pattern.
 
-Language packs are optional. A presence that uses them can infer its string keys directly
-from `locales/en-US.json`, without generating TypeScript files:
+### Optional locale files
 
-```typescript
+Inline strings are fine; no locale files or `getStrings()` call are required. If your presence has `locales/en-US.json`, for example:
+
+```json
+{
+  "browsingPage": "Browsing {title}"
+}
+```
+
+Import its shape as a type and request the current locale's strings:
+
+```ts
 import type enUS from "./locales/en-US.json"
 
 const presence = new Presence()
 
 presence.on("UpdateData", async () => {
-  const locale = await presence.getStrings<typeof enUS>()
-
+  const strings = await presence.getStrings<typeof enUS>()
   await presence.setActivity({
-    details: presence.formatString(locale.watchingVideo, { title: "My video" }),
+    details: presence.formatString(strings.browsingPage, { title: document.title }),
   })
 })
 ```
 
-The type-only import is removed from the bundle. It gives editors autocomplete for every
-key declared in `en-US.json` and makes unknown keys a TypeScript error. Presences without
-language packs can continue using inline strings and do not need to call `getStrings()`.
+The type-only import gives editors the keys in the JSON file without importing that JSON at runtime. `formatString` replaces `{title}`-style placeholders; placeholders without a matching parameter remain unchanged.
 
-Use `{name}` placeholders in locale values and `formatString(template, params)` to inject
-dynamic values. Unknown placeholders are left unchanged.
+## API at a glance
 
-## Helpers
+- **Activity:** `PresenceData` describes details, state, timestamps, images, activity type and buttons; `PresenceType` supplies the supported numeric activity types. `PresenceButton` and `PresenceTypeValue` are also exported.
+- **Runtime typing:** `PresenceConstructor`, `PresenceInstance`, `PresenceAssets` and `UpdateDataContext` type the injected API and its `UpdateData` callback. An instance can register `UpdateData`/`iFrameData` listeners, `setActivity`, `clearActivity`, `getStrings`, `formatString`, `getSetting`, `info` and `error`.
+- **Settings and frames:** `PresenceSetting`, `InferSettings`, `LocaleString` and the individual setting types cover boolean, input, select and slider settings. `IFrameConstructor`, `IFrameInstance` and `IFrameData` type nested-frame scripts.
+- **Helpers:** `createMediaTimestamps(media)` returns an empty object for paused media or start/end timestamps for playing media (the end timestamp is `undefined` if duration is not finite). `createImageProxyUrl`, `createImageProxyPath` and asynchronous `createCachedImageProxyUrl` build image proxy URLs and may return `undefined`.
+- **Metadata:** import `Metadata` from `@nowly/sdk/metadata`, not from the main entry.
 
-```typescript
-import { createMediaTimestamps, PresenceType } from "@nowly/sdk"
-import type { PresenceData } from "@nowly/sdk"
+See the [export list](https://github.com/nowly-presence/sdk/blob/stable/src/index.ts), [runtime interfaces](https://github.com/nowly-presence/sdk/blob/stable/src/types/instance.ts) and [metadata definition](https://github.com/nowly-presence/sdk/blob/stable/src/metadata.ts) for the exact signatures.
 
-createMediaTimestamps(videoElement)
-// => { startTimestamp: number, endTimestamp: number } | {}
-```
+## Contributing
 
-## API
-
-| Export | Kind | Description |
-|---|---|---|
-| `PresenceData` | type | Activity data sent to Discord |
-| `PresenceType` | const | `{ Playing: 0, Streaming: 1, Listening: 2, Watching: 3, Competing: 5 }` |
-| `PresenceTypeValue` | type | `0 \| 1 \| 2 \| 3 \| 5` |
-| `PresenceButton` | type | `{ label: string, url: string }` |
-| `PresenceSetting` | type | Boolean, Input, Select, or Slider setting |
-| `InferSettings` | type | Infers the settings object shape from definitions |
-| `LocaleString` | type | `Partial<Record<string, string>>` |
-| `UpdateDataContext` | type | Context received in `UpdateData` listener |
-| `PresenceInstance` | type | Runtime presence instance interface |
-| `PresenceConstructor` | type | Presence class interface |
-| `IFrameData` | type | Object payload sent from a nested-frame script |
-| `IFrameInstance` | type | Nested-frame runtime interface |
-| `IFrameConstructor` | type | Nested-frame runtime constructor interface |
-| `PresenceAssets` | type | `{ Logo, Icon, Thumbnail }` |
-| `createMediaTimestamps()` | fn | Compute start/end timestamps from media elements |
-| `createImageProxyUrl()` | fn | Build direct image proxy URL |
-| `createImageProxyPath()` | fn | Build image proxy URL from parts |
-| `createCachedImageProxyUrl()` | fn | Build cached image proxy URL (async) |
-
-`Metadata` (including optional `discordNative`) is exported from `@nowly/sdk/metadata`, not the main entry.
-
-## Presence instance methods
-
-`PresenceInstance` (the object returned by `new Presence(settings)`) exposes:
-
-| Method | Description |
-|---|---|
-| `on("UpdateData", ctx => ...)` | Registers the tick handler; `ctx.settings` holds current user settings |
-| `setActivity(data)` | Push `PresenceData` to Discord (async) |
-| `clearActivity()` | Clear the current activity |
-| `getStrings<T>()` | Load this presence's `locales/{lang}.json` content (async) |
-| `formatString(template, params)` | Interpolate `{name}`-style placeholders in a localized string |
-| `getSetting<T>(key)` | Read a single user setting value by key (async) |
-| `info(message)` / `error(message)` | Log to the extension's runtime log panel |
-
-### iFrame scripts
-
-Presence metadata can opt into a separate script for nested frames:
-
-```json
-{
-  "iframe": true,
-  "iFrameRegExp": "player\\.example\\.com/embed/"
-}
-```
-
-The `iframe.ts` file runs only in nested frames whose URL matches `iFrameRegExp`:
-
-```typescript
-const iframe = new iFrame()
-
-iframe.on("UpdateData", () => {
-  const video = document.querySelector("video")
-  if (!video) return
-
-  iframe.send({
-    video: {
-      paused: video.paused,
-      currentTime: video.currentTime,
-      duration: video.duration,
-    },
-  })
-})
-```
-
-The main `presence.ts` receives the data through `iFrameData`:
-
-```typescript
-presence.on("iFrameData", (data) => {
-  // Merge or replace the data from the matching frame.
-  console.log(data)
-})
-```
-
-Use `iframe.getUrl()` when the main presence needs to identify a frame. Send only activity data needed for Discord Rich Presence.
-
+For a new or broken **presence**, use the [presences repository](https://github.com/nowly-presence/presences) rather than adding a site script to this SDK. For SDK type or helper changes, [open an issue](https://github.com/nowly-presence/sdk/issues) or [submit a pull request](https://github.com/nowly-presence/sdk/pulls) here. The source lives in [`src/`](https://github.com/nowly-presence/sdk/tree/stable/src); the package's `build` script runs `tsup`.
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](https://github.com/nowly-presence/sdk/blob/stable/LICENSE)
