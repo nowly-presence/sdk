@@ -1,6 +1,6 @@
 {
   "name": "@nowly/sdk",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "license": "MIT",
   "author": {
     "name": "Gaëtan H",
@@ -32,6 +32,7 @@
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
-    "tsup": "^8.5.1"
+    "tsup": "^8.5.1",
+    "typescript": "6.0.3"
   }
 }

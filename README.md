@@ -12,20 +12,26 @@ The package has no runtime dependencies. Its main entry exports types, `Presence
 
 ## Your first presence
 
-In a `presence.ts` in the [Nowly presences project](https://github.com/nowly-presence/presences), where the runtime globals are already declared:
+In the [Nowly presences project](https://github.com/nowly-presence/presences), use CLI 1.7.0 or later and put definitions in `settings.ts`:
 
 ```ts
-import { PresenceType } from "@nowly/sdk"
+import type { PresenceSetting } from "@nowly/sdk"
 
-const settings = Presence.Settings({
+export default {
   "show-title": {
     type: "boolean",
     default: true,
     label: { "en-US": "Show page title" },
   },
-})
+} satisfies Record<string, PresenceSetting>
+```
 
-const presence = new Presence(settings)
+In `presence.ts`, the CLI has already registered the settings automatically:
+
+```ts
+import { PresenceType } from "@nowly/sdk"
+
+const presence = new Presence()
 
 presence.on("UpdateData", async ({ settings }) => {
   await presence.setActivity({
@@ -38,6 +44,8 @@ presence.on("UpdateData", async ({ settings }) => {
 ```
 
 `Presence` and `Assets` are **injected by the extension**, not imported from `@nowly/sdk`. `PresenceType` **is** a package export and must be imported. In a different TypeScript project, declare the injected globals using the exported `PresenceConstructor` and `PresenceAssets` types; installing the package alone does not supply those globals at runtime. The [presences project's global declarations](https://github.com/nowly-presence/presences/blob/stable/src/global.d.ts) show the pattern.
+
+The CLI gives `settings.ts` complete priority over legacy inline `Presence.Settings({ ... })` definitions, without merging them. Invalid files fail the build; legacy definitions remain supported when the file is absent. Use declarative, JSON-compatible definitions without browser or Node APIs. No settings import or manual registration is needed. The CLI still produces `settings.json` and registers defaults for existing extensions; saved user values remain unchanged. Read values from `ctx.settings`, or use `getSetting<boolean>("show-title")` when you need an explicitly typed value.
 
 ### Optional locale files
 
