@@ -15,6 +15,7 @@ export type PresenceData = {
   smallImageKey?: string;
   smallImageText?: string;
   type?: PresenceTypeValue;
+  statusDisplayType?: 0 | 1 | 2;
   buttons?: PresenceButton[];
 };
 
