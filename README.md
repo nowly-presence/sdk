@@ -69,6 +69,7 @@ The type-only import gives editors the keys in the JSON file without importing t
 ## API at a glance
 
 - **Activity:** `PresenceData` describes details, state, timestamps, images, activity type and buttons; `PresenceType` supplies the supported numeric activity types. `PresenceButton` and `PresenceTypeValue` are also exported.
+- **Status text:** optional `statusDisplayType` selects the field shown in Discord's compact status: `0` for the activity name, `1` for state, or `2` for details. It does not replace the card's name, details or state. This requires an extension and native host that forward this field; older versions ignore it.
 - **Runtime typing:** `PresenceConstructor`, `PresenceInstance`, `PresenceAssets` and `UpdateDataContext` type the injected API and its `UpdateData` callback. An instance can register `UpdateData`/`iFrameData` listeners, `setActivity`, `clearActivity`, `getStrings`, `formatString`, `getSetting`, `info` and `error`.
 - **Settings and frames:** `PresenceSetting`, `InferSettings`, `LocaleString` and the individual setting types cover boolean, input, select and slider settings. `IFrameConstructor`, `IFrameInstance` and `IFrameData` type nested-frame scripts.
 - **Helpers:** `createMediaTimestamps(media)` returns an empty object for paused media or start/end timestamps for playing media (the end timestamp is `undefined` if duration is not finite). `createImageProxyUrl`, `createImageProxyPath` and asynchronous `createCachedImageProxyUrl` build image proxy URLs and may return `undefined`.
