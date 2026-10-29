@@ -41,14 +41,19 @@
     "dist"
   ],
   "scripts": {
+    "prepare": "simple-git-hooks",
     "build": "tsup",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm build"
   },
+  "simple-git-hooks": {
+    "commit-msg": "node scripts/validate-commit-message.ts \"$1\""
+  },
   "devDependencies": {
     "@vitest/coverage-v8": "4.1.9",
+    "simple-git-hooks": "^2.14.0",
     "tsup": "^9.0.0",
     "typescript": "6.0.3",
     "vitest": "4.1.9"
