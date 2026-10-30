@@ -19,6 +19,8 @@ export interface PresenceFactory {
 export interface Metadata {
   slug?: string;
   name: string;
+  /** Alternative library URL slugs (lowercase, unique across presences) that redirect to this presence's page. */
+  aliases?: string[];
   version?: string;
   author: { name: string; github?: string };
   contributors?: { name: string; github?: string }[];

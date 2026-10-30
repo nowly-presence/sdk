@@ -82,7 +82,7 @@ The type-only import gives editors the keys in the JSON file without importing t
 - **Runtime typing:** `PresenceConstructor`, `PresenceInstance`, `PresenceAssets` and `UpdateDataContext` type the injected API and its `UpdateData` callback. An instance can register `UpdateData`/`iFrameData` listeners, `setActivity`, `clearActivity`, `getStrings`, `formatString`, `getSetting`, `info` and `error`.
 - **Settings and frames:** `PresenceSetting`, `InferSettings`, `LocaleString` and the individual setting types cover boolean, input, select and slider settings. `IFrameConstructor`, `IFrameInstance` and `IFrameData` type nested-frame scripts.
 - **Helpers:** `createMediaTimestamps(media)` returns an empty object for paused media or start/end timestamps for playing media (the end timestamp is `undefined` if duration is not finite). `createImageProxyUrl`, `createImageProxyPath` and asynchronous `createCachedImageProxyUrl` build image proxy URLs and may return `undefined`.
-- **Metadata:** import `Metadata` from `@nowly/sdk/metadata`, not from the main entry.
+- **Metadata:** import `Metadata` from `@nowly/sdk/metadata`, not from the main entry. Since SDK 1.8.0, optional `aliases` lists alternative library URL slugs that redirect to the presence page; each alias must be lowercase and unique across all presences.
 
 See the [export list](https://github.com/nowly-presence/sdk/blob/stable/src/index.ts), [runtime interfaces](https://github.com/nowly-presence/sdk/blob/stable/src/types/instance.ts) and [metadata definition](https://github.com/nowly-presence/sdk/blob/stable/src/metadata.ts) for the exact signatures.
 
